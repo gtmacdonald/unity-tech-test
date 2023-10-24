@@ -10,7 +10,7 @@
 * Smooth movement and rotation.
 
 ## External Libs
-* Uses the net standard 1.0 priority queue library here: https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
+* Includes the net standard 1.0 priority queue library here: https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
 * To try different dlls out go to the nuget library located here: https://www.nuget.org/packages/OptimizedPriorityQueue and follow these steps:
   1) Download the nuget package.
   2) Rename nuget to zip.
