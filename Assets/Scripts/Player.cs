@@ -6,11 +6,17 @@ public class Player : MonoBehaviour
     private NavGridPathNode[] _currentPath = Array.Empty<NavGridPathNode>();
     private int _currentPathIndex = 0;
     
+    /// <summary>
+    ///  The distance when we're close enough to a node to move to the next one.
+    /// </summary>
+    private float _minDistance = 0.4f;
+
     [SerializeField]
     private NavGrid _grid;
     [SerializeField]
-    private float _speed = 10.0f;
-
+    private float _maxSpeed = 10.0f;
+    
+    
     void Update()
     {
         // Check Input
@@ -29,16 +35,25 @@ public class Player : MonoBehaviour
         {
             var currentNode = _currentPath[_currentPathIndex];
             
-            var maxDistance = _speed * Time.deltaTime;
+            var maxDistance = _maxSpeed * Time.deltaTime;
             var vectorToDestination = currentNode.Position - transform.position;
             var moveDistance = Mathf.Min(vectorToDestination.magnitude, maxDistance);
 
-            var moveVector = vectorToDestination.normalized * moveDistance;
-            moveVector.y = 0f; // Ignore Y
+            var forwardDirection = vectorToDestination.normalized;
+            forwardDirection.y = 0.0f;
+
+            var rotationForward = new Quaternion();
+            rotationForward.SetLookRotation(forwardDirection);
+            transform.rotation = rotationForward;
+            
+            var moveVector = forwardDirection * moveDistance;
             transform.position += moveVector;
 
-            if (transform.position == currentNode.Position)
+            if (Mathf.Abs(transform.position.x - currentNode.Position.x) <= _minDistance &&
+                Mathf.Abs(transform.position.z - currentNode.Position.z) <= _minDistance)
+            {
                 _currentPathIndex++;
+            }
         }
     }
 }
